@@ -1,0 +1,7 @@
+{
+  "extends": "eslint-config-egg",
+  "rules": {
+        // 允许箭头函数不使用圆括号
+        "arrow-parens": 0
+  }
+}
