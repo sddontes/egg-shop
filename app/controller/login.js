@@ -3,14 +3,13 @@
 const Controller = require('../core/base_controller');
 
 /**
- * Controller - 登录
- * @class
- * @author ruiyong-lee
+ * @controller BookController（ 注释必写，swagger-doc是根据这段注释来生成接口的 ）。
  */
 class UserController extends Controller {
   /**
-   * 用户登录
-   */
+   * @summary 用户登录
+   * @description 用户登录
+   **/
   async userLogin() {
     const { ctx } = this;
     const res = await ctx.service.user.user.getUserInfo();

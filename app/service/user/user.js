@@ -4,9 +4,7 @@ const md5 = require('md5');
 const Service = require('egg').Service;
 
 /**
- * Service - 用户
- * @class
- * @author ruiyong-lee
+ * @controller BookController（ 注释必写，swagger-doc是根据这段注释来生成接口的 ）。
  */
 class UserService extends Service {
   /**

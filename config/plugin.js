@@ -28,4 +28,9 @@ module.exports = {
     enable: true,
     package: 'egg-redis',
   },
+  // swagger接口文档
+  swaggerdoc: {
+    enable: true,
+    package: 'egg-swagger-doc',
+  },
 };
