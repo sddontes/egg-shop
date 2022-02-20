@@ -15,14 +15,14 @@ module.exports = (options, app) => {
       const session =
         ctx.helper.JSONParse(await app.redis.get('default').get(sessionid)) ||
         {};
-      const { openId } = session;
-      const excludedPathList = ['/weapp/login']; // 不需要登录的接口
+      const { openid } = session;
+      const excludedPathList = ['/weapp/login', '/weapp/user/login']; // 不需要登录的接口
 
-      ctx.request.body.openId = openId;
+      ctx.request.body.openid = openid;
       ctx.request.body = { ...ctx.request.body, ...ctx.query };
 
       // 过滤登录接口
-      if (openId || excludedPathList.includes(ctx.path)) {
+      if (openid || excludedPathList.includes(ctx.path)) {
         await next();
       } else {
         ctx.status = 401;
@@ -34,10 +34,14 @@ module.exports = (options, app) => {
     } else {
       // 管理端接口
       // 过滤登录接口和验证token
-      const ignorePaths = ['/user/login', '/user/logout'];
-      const valid = await ctx.verifyToken();
-      if (valid || ignorePaths.includes(ctx.path)) {
+      const ignorePaths = ['/api/user/login', '/api/user/logout'];
+      if (ignorePaths.includes(ctx.path)) {
         await next();
+      } else {
+        const valid = await ctx.verifyToken();
+        if (valid) {
+          await next();
+        }
       }
     }
   };

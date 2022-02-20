@@ -3,9 +3,6 @@
 const md5 = require('md5');
 const Service = require('egg').Service;
 
-/**
- * @controller BookController（ 注释必写，swagger-doc是根据这段注释来生成接口的 ）。
- */
 class UserService extends Service {
   /**
    * 查找某个用户数据
@@ -14,35 +11,23 @@ class UserService extends Service {
    * @return {object|null} - 查找结果
    */
   async getUserInfo(params) {
-    console.log('params', params);
-    return await this.app.mysql.query(
-      'select * from admin where nickname like "%程%"'
+    const { openid } = params;
+    const result = await this.app.mysql.query(
+      `select user_id,openid,status from user_users where openid = '${openid}'`
     );
-    // return await this.app.mysql.get('admin', {
-    //   id: 1,
-    // });
+    return result[0];
   }
-
   /**
    * 新增用户
    * @param {object} params - 条件
    * @return {string|null} - 用户uuid
    */
-  async saveNew(params = {}) {
-    let { merchant, userUuid, userName } = params;
-    const { app } = this;
-    const crateInfo = app.getCrateInfo(userUuid, userName);
-
-    merchant = {
-      ...merchant,
-      ...crateInfo,
-      password: md5(merchant.password),
-      orgName: merchant.name,
-      userType: 'merchant',
-      enableStatus: true,
-    };
-
-    return await app.model.User.Merchant.saveNew(merchant);
+  async registerUser(params = {}) {
+    const { openid, userId } = params;
+    const result = await this.app.mysql.query(
+      `INSERT INTO user_users (user_id,openid) values ('${userId}','${openid}')`
+    );
+    return result;
   }
 
   /**

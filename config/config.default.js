@@ -22,15 +22,15 @@ module.exports = (appInfo) => {
   config.mysql = {
     client: {
       // host
-      host: '127.0.0.1',
+      host: '175.24.226.96',
       // 端口号
       port: '3306',
       // 用户名
-      user: 'root',
+      user: 'benben',
       // 密码
       password: '123',
       // 数据库名
-      database: 'boblog',
+      database: 'benben',
     },
     // 是否加载到 app 上，默认开启
     app: true,
@@ -71,21 +71,21 @@ module.exports = (appInfo) => {
       default: {
         host: '127.0.0.1',
         port: '6379',
-        password: '',
+        password: '123',
         db: '0',
       },
-      subscribe: {
-        host: '127.0.0.1',
-        port: '6379',
-        password: '',
-        db: '1',
-      },
-      session: {
-        host: '127.0.0.1',
-        port: '6379',
-        password: '',
-        db: '2',
-      },
+      // subscribe: {
+      //   host: '175.24.226.96',
+      //   port: '6379',
+      //   password: '123',
+      //   db: '1',
+      // },
+      // session: {
+      //   host: '175.24.226.96',
+      //   port: '6379',
+      //   password: '123',
+      //   db: '2',
+      // },
     },
     agent: true,
   };

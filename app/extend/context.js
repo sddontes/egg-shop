@@ -13,12 +13,11 @@ module.exports = {
   // 设置token
   setToken(data = {}) {
     const { app } = this;
-    const { name, userUuid, userName, userType, orgUuid } = data;
+    // const { name, userUuid, userName, userType, orgUuid } = data;
     // 如果需要得到精确的结果，需要自己另加额外的控制标志位
     // if (decodeURI(name) === name) {
     //   name = encodeURI(name);
     // }
-
     const token = app.jwt.sign(data, app.config.jwt.secret, {
       expiresIn: '12h',
     });
@@ -28,20 +27,10 @@ module.exports = {
       overwrite: true,
       signed: false,
     };
-    console.log(
-      'name, userUuid, userName, userType, orgUuid',
-      name,
-      userUuid,
-      userName,
-      userType,
-      orgUuid
-    );
-    this.cookies.set('token', token, { ...cookieConfig, httpOnly: true });
-    this.cookies.set('name', name, cookieConfig);
-    this.cookies.set('userUuid', userUuid, cookieConfig);
-    this.cookies.set('userName', userName, cookieConfig);
-    this.cookies.set('userType', userType, cookieConfig);
-    this.cookies.set('orgUuid', orgUuid || userUuid, cookieConfig);
+    this.cookies.set('token', Object.keys(data).length ? token : '', {
+      ...cookieConfig,
+      httpOnly: true,
+    });
   },
   removeToken() {
     this.cookies.set('token', null);
@@ -49,23 +38,18 @@ module.exports = {
   // 校验token
   async verifyToken() {
     const { app } = this;
-    const name = this.cookies.get('name', { signed: false });
-    const userUuid = this.cookies.get('userUuid', { signed: false });
-    const userName = this.cookies.get('userName', { signed: false });
-    const userType = this.cookies.get('userType', { signed: false });
-    const orgUuid = this.cookies.get('orgUuid', { signed: false });
     const token = this.getAccessToken(this);
     const verifyResult = await new Promise((resolve) => {
       app.jwt.verify(token, app.config.jwt.secret, (err, decoded) => {
         if (err) {
-          if (err.name === 'TokenExpiredError' && userUuid) {
-            this.setToken({ name, userUuid, userName, userType, orgUuid }); // 刷新token
-            resolve({ verify: true, message: { userUuid } });
+          if (err.name === 'TokenExpiredError') {
+            this.setToken(); // 刷新token
+            resolve({ verify: true, message: 'token失效' });
           } else {
             resolve({ verify: false, message: err.message });
           }
         } else {
-          resolve({ verify: true, message: decoded });
+          resolve({ verify: true, data: decoded });
         }
       });
     });
@@ -73,16 +57,11 @@ module.exports = {
       this.verifyFail(401, verifyResult.message);
       return false;
     }
-    if (userUuid !== verifyResult.message.userUuid) {
-      this.verifyFail(401, '用户 UUID 与 Token 不一致');
-      return false;
-    }
-    this.request.body.userUuid = userUuid;
-    this.request.body.userName = userName;
-    this.request.body.userType = userType;
-    this.request.body.orgUuid = orgUuid;
-    // 将get请求的ctx.query合并到ctx.request.body，这里这么做是暂时的想法，我再考虑下
-    this.request.body = { ...this.request.body, ...this.query };
+    this.request.body = {
+      ...this.request.body,
+      ...this.query,
+      userid: verifyResult.data.user_id,
+    };
     return true;
   },
   // 校验token失败
