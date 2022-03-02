@@ -8,7 +8,10 @@ module.exports = {
 
   // 获取token
   getAccessToken() {
-    return this.cookies.get('token', { signed: false });
+    return (
+      this.request.header.authorization ||
+      this.cookies.get('token', { signed: false })
+    );
   },
   // 设置token
   setToken(data = {}) {
@@ -31,6 +34,7 @@ module.exports = {
       ...cookieConfig,
       httpOnly: true,
     });
+    return token;
   },
   removeToken() {
     this.cookies.set('token', null);
@@ -60,7 +64,7 @@ module.exports = {
     this.request.body = {
       ...this.request.body,
       ...this.query,
-      userid: verifyResult.data.user_id,
+      currentUserId: verifyResult.data?.user_id,
     };
     return true;
   },

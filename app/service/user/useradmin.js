@@ -16,10 +16,9 @@ class UserService extends Service {
    * @param {string} password - 用户密码
    * @return {object|null} - 查找结果
    */
-  async getUserInfo(params) {
-    const { username } = params;
+  async getUserInfo({ currentUserId }) {
     const result = await this.app.mysql.query(
-      `select * from user_admin where username = '${username}'`
+      `select * from user_admin where user_id = '${currentUserId}'`
     );
     return result[0];
   }
@@ -38,6 +37,27 @@ class UserService extends Service {
     );
     return !!(result && result.affectedRows);
   }
+  // 管理员列表查询
+  async getManagerList(params = {}) {
+    const { nickname, userId: user_id, mobile, page, pageSize } = params;
+    const _params = {
+      nickname,
+      mobile,
+      user_id,
+    };
+    let queryString = '';
+    for (const i in _params) {
+      if (i && _params[i]) {
+        queryString = queryString + `and ${i}='${_params[i]}' `;
+      }
+    }
+    queryString = queryString ? 'where ' + queryString.slice(4) : '';
+    const result = await this.app.mysql.query(
+      `select * from user_admin ${queryString}ORDER BY 'create-time' DESC limit ${
+        page ? page - 1 : 0
+      },${pageSize || 10};`
+    );
+    return result || [];
+  }
 }
-
 module.exports = UserService;

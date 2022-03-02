@@ -17,6 +17,28 @@ class UserService extends Service {
     );
     return result[0];
   }
+  // 微信小程序用户列表，模糊查询
+  async getUserList(params = {}) {
+    const { nickname, userId: user_id, mobile, page, pageSize } = params;
+    const _params = {
+      nickname,
+      mobile,
+      user_id,
+    };
+    let queryString = '';
+    for (const i in _params) {
+      if (i && _params[i]) {
+        queryString = queryString + `and ${i}='${_params[i]}' `;
+      }
+    }
+    queryString = queryString ? 'where ' + queryString.slice(4) : '';
+    const result = await this.app.mysql.query(
+      `select * from user_users ${queryString}ORDER BY 'create-time' DESC limit ${
+        page ? page - 1 : 0
+      },${pageSize || 10};`
+    );
+    return result || [];
+  }
   /**
    * 新增用户
    * @param {object} params - 条件

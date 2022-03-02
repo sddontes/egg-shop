@@ -24,8 +24,8 @@ class UserController extends Controller {
       return;
     }
     const { user_id } = res;
-    ctx.setToken({ user_id });
-    this.success({ user_id, username });
+    const token = ctx.setToken({ user_id });
+    this.success({ user_id, username, token });
   }
   /**
    * @Description: 新增用户
@@ -50,16 +50,29 @@ class UserController extends Controller {
     }
     this.fail();
   }
-
+  // 查询单个管理员的信息详情
   async getUserInfo() {
     const { ctx } = this;
-    const { username } = ctx.request.body;
-    const userInfo = await ctx.service.user.useradmin.getUserInfo({ username });
+    const { currentUserId } = ctx.request.body;
+    const userInfo = await ctx.service.user.useradmin.getUserInfo({
+      currentUserId,
+    });
     if (userInfo) {
       this.success(userInfo);
       return;
     }
     this.fail();
+  }
+  // 查询小程序用户列表，支持模糊查询
+  // 手机号字段格式有问题，暂不支持
+  async getManagerList() {
+    const { ctx } = this;
+    const managerList = await ctx.service.user.useradmin.getManagerList(
+      ctx.request.body
+    );
+    managerList.length
+      ? this.success(managerList)
+      : this.fail([], '未查询到任何信息');
   }
 }
 

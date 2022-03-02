@@ -82,6 +82,17 @@ class UserController extends Controller {
     const res = await ctx.service.user.user.getUserInfo(ctx.request.body);
     this.success(res);
   }
+  // 查询小程序用户列表，支持模糊查询
+  // 手机号字段格式有问题，暂不支持
+  async getUserList() {
+    const { ctx } = this;
+    const userList = await ctx.service.user.userwx.getUserList(
+      ctx.request.body
+    );
+    userList.length
+      ? this.success(userList)
+      : this.fail([], '未查询到任何信息');
+  }
 }
 
 module.exports = UserController;

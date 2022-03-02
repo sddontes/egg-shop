@@ -12,17 +12,13 @@ class BaseController extends Controller {
     return this.ctx.session.user;
   }
 
-  success(data, message, status) {
-    this.ctx.body = {
-      code: this.ctx.SUCCESS_CODE,
-      data,
-      message: message || '操作成功',
-    };
-    this.ctx.status = status || 200;
+  success(data, message = '操作成功', code = this.ctx.SUCCESS_CODE) {
+    this.ctx.body = { code, message, data };
+    this.ctx.status = 200;
   }
 
-  fail(message, code = this.ctx.ERROR_CODE) {
-    this.ctx.body = { code, message: message || '操作失败', data: {} };
+  fail(data = {}, message = '操作失败', code = this.ctx.ERROR_CODE) {
+    this.ctx.body = { code, message, data };
     this.ctx.status = 200;
   }
 

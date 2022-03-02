@@ -38,4 +38,23 @@ CREATE TABLE `benben`.`user_admin` (
   `hometown` VARCHAR(45) NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `iduser_UNIQUE` (`user_id` ASC))
-;
+  ;
+
+  CREATE TABLE `benben`.`products_manage` (
+    `id` INT NOT NULL,
+    `name` FLOAT NULL COMMENT '商品名',
+    `price` FLOAT NULL COMMENT '售卖价格',
+    `discount_price` FLOAT NULL COMMENT '折扣价',
+    `incoming_price` FLOAT NULL COMMENT '进货价',
+    `base_price` FLOAT NULL COMMENT '基础价格',
+    `stock` INT ZEROFILL NULL COMMENT '库存',
+    `type` VARCHAR(45) NULL COMMENT '商品类型',
+    `brand` VARCHAR(45) NULL COMMENT '品牌',
+    `title` VARCHAR(45) NULL COMMENT '标题',
+    `sold` VARCHAR(45) NULL COMMENT '已售卖',
+    `primary_img` VARCHAR(65) NULL,
+    `banner_img` VARCHAR(345) NULL,
+    `detail_img` VARCHAR(345) NULL,
+    `detail_content` VARCHAR(1845) NULL,
+    PRIMARY KEY (`id`));
+  
