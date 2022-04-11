@@ -48,8 +48,8 @@ class MpUploadOssHelper {
 class UploadService extends Service {
   async index() {
     const mpHelper = new MpUploadOssHelper({
-      accessKeyId: 'LTAI5tPjYUXMtCbdYZtWrGvj',
-      accessKeySecret: 'WEQNwWTfnmgayx7ioCC5UQEh7Jfe1h',
+      accessKeyId: 'LTAI5tPjYUXMtC', //bdYZtWrGvj
+      accessKeySecret: 'WEQNwWTfnmg', // ayx7ioCC5UQEh7Jfe1h
       // 限制参数的生效时间，单位为小时，默认值为1。
       timeout: 1,
       // 限制上传文件大小，单位为MB，默认值为10。
