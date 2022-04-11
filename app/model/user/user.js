@@ -1,47 +1,41 @@
 'use strict';
 
-const md5 = require('md5');
-const Service = require('egg').Service;
-
-/**
- * Model - 用户
- * @class
- * @author ruiyong-lee
- */
-class userModel extends Service {
-  //   /**
-  //    * 查找某个用户数据
-  //    * @param {string} userName - 用户账号
-  //    * @param {string} password - 用户密码
-  //    * @return {object|null} - 查找结果
-  //    */
-  async getUserInfo() {
-    return await this.app.mysql.get('admin', {
-      id: 1,
-    });
-  }
+module.exports = app => {
+  const { model, checkUpdate } = app;
+  const adminSchema = require('../../schema/admin.js')(app);
+  const Admin = model.define('admin', adminSchema);
 
   /**
-   * 新增用户
-   * @param {object} params - 条件
-   * @return {string|null} - 用户uuid
+   * 查找管理员
+   * @param {object} { uuid, attributes } - 条件
+   * @return {object|null} - 查找结果
    */
-  async saveNew(params = {}) {
-    let { merchant, userUuid, userName } = params;
-    const { app } = this;
-    const crateInfo = app.getCrateInfo(userUuid, userName);
+  // Admin.get = async ({ uuid, attributes }) => {
+  //   return await Admin.findOne({
+  //     attributes,
+  //     where: { uuid },
+  //   });
+  // };
 
-    merchant = {
-      ...merchant,
-      ...crateInfo,
-      password: md5(merchant.password),
-      orgName: merchant.name,
-      userType: 'merchant',
-      enableStatus: true,
-    };
+  /**
+   * 修改商家密码
+   * @param {object} params - 条件
+   * @return {string} - 商家uuid
+   */
+  Admin.savePasswordModify = async params => {
+    const { uuid, oldPassword, password, lastModifierId, lastModifierName } = params;
+    const result = await Admin.update({ password, lastModifierId, lastModifierName }, {
+      where: {
+        uuid,
+        password: oldPassword,
+      },
+    });
 
-    return await app.model.User.Merchant.saveNew(merchant);
-  }
-}
+    checkUpdate(result, '旧密码不正确');
 
-module.exports = userModel;
+    return uuid;
+  };
+
+  return Admin;
+};
+

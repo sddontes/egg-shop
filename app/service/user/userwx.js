@@ -59,15 +59,14 @@ class UserService extends Service {
    */
   async saveModify(params = {}) {
     const { app } = this;
-    let { merchant, userUuid, userName } = params;
+    let { merchant } = params;
     const { password } = merchant;
-    const modifyInfo = app.getModifyInfo(userUuid, userName);
 
     if (password) {
       merchant.password = md5(password);
     }
 
-    merchant = { ...merchant, ...modifyInfo };
+    merchant = { ...merchant };
 
     return await app.model.User.Merchant.saveModify(merchant);
   }

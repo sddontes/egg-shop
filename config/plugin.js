@@ -10,10 +10,10 @@ module.exports = {
     enable: true,
     package: 'egg-cors',
   },
-  mysql: {
-    enable: true,
-    package: 'egg-mysql',
-  },
+  // mysql: {
+  //   enable: true,
+  //   package: 'egg-mysql',
+  // },
   // 校验入参
   validate: {
     enable: true,
@@ -29,8 +29,12 @@ module.exports = {
     package: 'egg-redis',
   },
   // swagger接口文档
-  swaggerdoc: {
+  // swaggerdoc: {
+  //   enable: true,
+  //   package: 'egg-swagger-doc',
+  // },
+  sequelize: {
     enable: true,
-    package: 'egg-swagger-doc',
+    package: 'egg-sequelize',
   },
 };

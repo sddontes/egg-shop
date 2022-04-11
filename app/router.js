@@ -13,13 +13,14 @@ module.exports = (app) => {
   router.get('/weapp/user/getMobile', controller.user.userwx.getUserMobile); // 微信授权获取手机号接口
   router.post('/api/user/getUserList', controller.user.userwx.getUserList); // 查询用户列表
   // 后台管理系统
-  router.post('/api/user/login', controller.user.useradmin.login); // 登录
-  router.post('/api/user/addUser', controller.user.useradmin.addUser); // 新增
-  router.post('/api/user/getUserInfo', controller.user.useradmin.getUserInfo); // 查询单个管理员信息
-  router.post(
-    '/api/user/getManagerList',
-    controller.user.useradmin.getManagerList
-  ); // 查询用户列表
+  router.post('/api/user/adminlogin', controller.user.admin.login); // 登录
+  router.post('/api/user/addAdmin', controller.user.admin.addAdmin); // 新增
+  router.post('/api/user/getAdminInfo', controller.user.admin.getAdminInfo); // 查询单个
+  router.post('/api/user/delAdmin', controller.user.admin.delAdmin); // 删除
+  router.post('/api/user/updateAdmin', controller.user.admin.updateAdmin); // 修改
+  router.post('/api/user/changeStatusAdmin', controller.user.admin.disabledAdmin); // 开启/禁用管理员
+  router.post('/api/user/resetPassword', controller.user.admin.resetPassword); // 密码重置
+  router.post('/api/user/getAdminList', controller.user.admin.getAdminList); // 查询列表
 
   // router.get('/api/user/getWxUserInfo', controller.user.userWx.getUserInfo); // 查询单个微信用户信息
 

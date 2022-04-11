@@ -1,6 +1,6 @@
 /* eslint valid-jsdoc: "off" */
 
-'use strict';
+"use strict";
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
@@ -13,35 +13,50 @@ module.exports = (appInfo) => {
   const config = (exports = {});
 
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1644306347590_7787';
+  config.keys = appInfo.name + "_1644306347590_7787";
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
   };
-  // add your mysql
-  config.mysql = {
-    client: {
-      // host
-      host: '175.24.226.96',
-      // 端口号
-      port: '3306',
-      // 用户名
-      user: 'benben',
-      // 密码
-      password: '123',
-      // 数据库名
-      database: 'benben',
+  config.sequelize = {
+    dialect: "mysql",
+    host: "127.0.0.1",
+    port: 3306,
+    username: "root",
+    password: "123456",
+    timezone: "+08:00",
+    database: "benben",
+    define: {
+      paranoid: false,
+      timestamps: false, // 是否表内自动添加createAt和updateAt的时间戳字段
+      freezeTableName: true, // true: 数据库表名按照model的define名字，false则为名字复数，+s
+      underscored: false, // true: 是否下划线转换，比如数据库字段user_name，查询使用使用userName即可，false则为不转换
     },
-    // 是否加载到 app 上，默认开启
-    app: true,
-    // 是否加载到 agent 上，默认关闭
-    agent: false,
   };
+  // add your mysql
+  // config.mysql = {
+  //   client: {
+  //     // host
+  //     host: '175.24.226.96',
+  //     // 端口号
+  //     port: '3306',
+  //     // 用户名
+  //     user: 'benben',
+  //     // 密码
+  //     password: '123',
+  //     // 数据库名
+  //     database: 'benben',
+  //   },
+  //   // 是否加载到 app 上，默认开启
+  //   app: true,
+  //   // 是否加载到 agent 上，默认关闭
+  //   agent: false,
+  // };
 
   // set header allow origin
   config.cors = {
-    origin: '*',
-    allowMethods: 'GET,PUT,POST,DELETE',
+    origin: "*",
+    allowMethods: "GET,PUT,POST,DELETE",
   };
 
   config.security = {
@@ -54,7 +69,7 @@ module.exports = (appInfo) => {
         return false;
       },
     },
-    domainWhiteList: ['*'],
+    domainWhiteList: ["*"],
   };
   config.validate = {
     // convert: false,
@@ -62,17 +77,17 @@ module.exports = (appInfo) => {
   };
   // jwt
   config.jwt = {
-    secret: '123456',
+    secret: "123456",
     // ignore: '/weapp',
   };
   // redis
   config.redis = {
     clients: {
       default: {
-        host: '127.0.0.1',
-        port: '6379',
-        password: '123',
-        db: '0',
+        host: "127.0.0.1",
+        port: "6379",
+        password: "",
+        db: "0",
       },
       // subscribe: {
       //   host: '175.24.226.96',
@@ -93,41 +108,41 @@ module.exports = (appInfo) => {
   // multipart: {
   //   mode: 'file',
   // },
-  config.swaggerdoc = {
-    dirScanner: './app/controller', // 配置自动扫描的控制器路径。
-    // 接口文档的标题，描述或其它。
-    apiInfo: {
-      title: 'NAPI', // 接口文档的标题。
-      description: 'swagger-ui for NAPI document.', // 接口文档描述。
-      version: '1.0.0', // 接口文档版本。
-    },
-    schemes: ['http', 'https'], // 配置支持的协议。
-    consumes: ['application/json'], // 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html。
-    produces: ['application/json'], // 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回。
-    securityDefinitions: {
-      // 配置接口安全授权方式。
-      // apikey: {
-      //   type: 'apiKey',
-      //   name: 'clientkey',
-      //   in: 'header',
-      // },
-      // oauth2: {
-      //   type: 'oauth2',
-      //   tokenUrl: 'http://petstore.swagger.io/oauth/dialog',
-      //   flow: 'password',
-      //   scopes: {
-      //     'write:access_token': 'write access_token',
-      //     'read:access_token': 'read access_token',
-      //   },
-      // },
-    },
-    enableSecurity: false, // 是否启用授权，默认 false（不启用）。
-    // enableValidate: true,    // 是否启用参数校验，默认 true（启用）。
-    routerMap: false, // 是否启用自动生成路由，默认 true (启用)。
-    enable: true, // 默认 true (启用)。
-  };
+  // config.swaggerdoc = {
+  //   dirScanner: './app/controller', // 配置自动扫描的控制器路径。
+  //   // 接口文档的标题，描述或其它。
+  //   apiInfo: {
+  //     title: 'NAPI', // 接口文档的标题。
+  //     description: 'swagger-ui for NAPI document.', // 接口文档描述。
+  //     version: '1.0.0', // 接口文档版本。
+  //   },
+  //   schemes: ['http', 'https'], // 配置支持的协议。
+  //   consumes: ['application/json'], // 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html。
+  //   produces: ['application/json'], // 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回。
+  //   securityDefinitions: {
+  //     // 配置接口安全授权方式。
+  //     // apikey: {
+  //     //   type: 'apiKey',
+  //     //   name: 'clientkey',
+  //     //   in: 'header',
+  //     // },
+  //     // oauth2: {
+  //     //   type: 'oauth2',
+  //     //   tokenUrl: 'http://petstore.swagger.io/oauth/dialog',
+  //     //   flow: 'password',
+  //     //   scopes: {
+  //     //     'write:access_token': 'write access_token',
+  //     //     'read:access_token': 'read access_token',
+  //     //   },
+  //     // },
+  //   },
+  //   enableSecurity: false, // 是否启用授权，默认 false（不启用）。
+  //   // enableValidate: true,    // 是否启用参数校验，默认 true（启用）。
+  //   routerMap: false, // 是否启用自动生成路由，默认 true (启用)。
+  //   enable: true, // 默认 true (启用)。
+  // };
   // 中间件
-  config.middleware = ['auth', 'errorHandler'];
+  config.middleware = ["auth", "errorHandler"];
   return {
     ...config,
     ...userConfig,

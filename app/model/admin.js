@@ -2,7 +2,7 @@
 
 module.exports = (app) => {
   const { model } = app;
-  const adminSchema = require('../../schema/admin.js')(app);
+  const adminSchema = require('../schema/admin.js')(app);
   const Admin = model.define('admin', adminSchema);
 
   /**
